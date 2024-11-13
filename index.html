@@ -72,6 +72,9 @@
         const container = document.getElementById('gachaContainer');
         const button = document.getElementById('pullButton');
 
+        // GitHubのベースURL
+        const baseUrl = "https://github.com/TSN42/gacha/blob/master";
+
         // 初期表示用の箱を作成
         for (let i = 0; i < 10; i++) {
             container.innerHTML += `
@@ -83,7 +86,7 @@
         function getRandomImage(rarity) {
             const max = imageCount[rarity];
             const randomNum = Math.floor(Math.random() * max) + 1;
-            return `/${rarity}/${rarity}${randomNum}.png`;
+            return `${baseUrl}/${rarity}/${rarity}${randomNum}.png?raw=true`;
         }
 
         async function pullGacha() {

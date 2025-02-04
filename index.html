@@ -117,95 +117,108 @@
     </div>
 
     <script>
-        const imageCount = { 'R': 2, 'SR': 3, 'SSR': 1 };
-        const container = document.getElementById('gachaContainer');
-        const button = document.getElementById('pullButton');
-        const modal = document.getElementById('imageModal');
-        const modalImage = document.getElementById('modalImage');
+        const imageCount = { 'R': 13, 'SR': 2, 'SSR': 3 };  // 各レアリティの画像枚数
+const container = document.getElementById('gachaContainer');
+const button = document.getElementById('pullButton');
+const modal = document.getElementById('imageModal');
+const modalImage = document.getElementById('modalImage');
 
-        const baseUrl = "https://raw.githubusercontent.com/pinktwin/gacha/master/images";
+const baseUrl = "https://raw.githubusercontent.com/pinktwin/gacha/master/images";  // 新しいURLを使用
 
-        // 初期表示用の箱を作成
-        for (let i = 0; i < 10; i++) {
-            container.innerHTML += `<div class="gacha-item" id="item${i}">?</div>`;
-        }
+// 初期表示用の箱を作成
+for (let i = 0; i < 10; i++) {
+    container.innerHTML += `<div class="gacha-item" id="item${i}">?</div>`;
+}
 
-        // レアリティに応じてランダムな画像のパスを取得
-        function getRandomImage(rarity) {
-            const max = imageCount[rarity];
-            const randomNum = Math.floor(Math.random() * max) + 1;
-            return `${baseUrl}/${rarity}/${rarity}${randomNum}.png`;
-        }
+// レアリティに応じてランダムな画像のパスを取得
+function getRandomImage(rarity) {
+    let max;
+    
+    // レアリティに応じて最大数を設定
+    if (rarity === 'R') {
+        max = 13;
+    } else if (rarity === 'SR') {
+        max = 2;
+    } else if (rarity === 'SSR') {
+        max = 3;
+    }
 
-        async function pullGacha() {
-            button.disabled = true;
+    // ランダムに番号を選び、ゼロ埋めして2桁にする
+    const randomNum = Math.floor(Math.random() * max) + 1;
+    const paddedNum = randomNum.toString().padStart(2, '0');
 
-            for (let i = 0; i < 10; i++) {
-                document.getElementById(`item${i}`).innerHTML = '?';
-                document.getElementById(`item${i}`).className = 'gacha-item';
-            }
+    // 画像のURLを組み立てる
+    return `${baseUrl}/${rarity}/${rarity}${paddedNum}.png`;
+}
 
-            for (let i = 0; i < 10; i++) {
-                await new Promise(resolve => setTimeout(resolve, 700)); // 画像表示をさらにゆっくりに
-                showResult(i);
-            }
+async function pullGacha() {
+    button.disabled = true;
 
-            button.disabled = false;
-        }
+    for (let i = 0; i < 10; i++) {
+        document.getElementById(`item${i}`).innerHTML = '?';
+        document.getElementById(`item${i}`).className = 'gacha-item';
+    }
 
-        function showResult(index) {
-            const rarity = getRandomRarity();
-            const imagePath = getRandomImage(rarity);
-            const element = document.getElementById(`item${index}`);
-            
-            // レアリティに応じたクラスを適用し、画像を設定
-            element.className = `gacha-item rarity-${rarity}`;
-            element.innerHTML = `<img src="${imagePath}" alt="${rarity}キャラクター" onclick="openModal('${imagePath}')">`;
+    for (let i = 0; i < 10; i++) {
+        await new Promise(resolve => setTimeout(resolve, 700)); // 画像表示をさらにゆっくりに
+        showResult(i);
+    }
 
-            // レアリティに応じてサウンドを再生
-            playSound(rarity);
-        }
+    button.disabled = false;
+}
 
-        // 音を再生する関数（前の音に被せて再生）
-        function playSound(rarity) {
-            let soundSrc;
-            switch (rarity) {
-                case 'R':
-                    soundSrc = 'https://github.com/TSN42/gacha/blob/master/sound/R.mp3?raw=true';
-                    break;
-                case 'SR':
-                    soundSrc = 'https://github.com/TSN42/gacha/blob/master/sound/SR.mp3?raw=true';
-                    break;
-                case 'SSR':
-                    soundSrc = 'https://github.com/TSN42/gacha/blob/master/sound/SSR.mp3?raw=true';
-                    break;
-            }
+function showResult(index) {
+    const rarity = getRandomRarity();
+    const imagePath = getRandomImage(rarity);
+    const element = document.getElementById(`item${index}`);
+    
+    // レアリティに応じたクラスを適用し、画像を設定
+    element.className = `gacha-item rarity-${rarity}`;
+    element.innerHTML = `<img src="${imagePath}" alt="${rarity}キャラクター" onclick="openModal('${imagePath}')">`;
 
-            // 新しいaudio要素を生成して再生
-            const audio = new Audio(soundSrc);
-            audio.play();
-        }
+    // レアリティに応じてサウンドを再生
+    playSound(rarity);
+}
 
-        function getRandomRarity() {
-            const rand = Math.random() * 100;
-            if (rand < 5) return 'SSR';
-            if (rand < 25) return 'SR';
-            return 'R';
-        }
+function playSound(rarity) {
+    let soundSrc;
+    switch (rarity) {
+        case 'R':
+            soundSrc = 'https://github.com/TSN42/gacha/blob/master/sound/R.mp3?raw=true';
+            break;
+        case 'SR':
+            soundSrc = 'https://github.com/TSN42/gacha/blob/master/sound/SR.mp3?raw=true';
+            break;
+        case 'SSR':
+            soundSrc = 'https://github.com/TSN42/gacha/blob/master/sound/SSR.mp3?raw=true';
+            break;
+    }
 
-        function openModal(imageSrc) {
-            event.stopPropagation();
-            modalImage.src = imageSrc;
-            modal.style.display = 'flex';
-        }
+    const audio = new Audio(soundSrc);
+    audio.play();
+}
 
-        function closeModal() {
-            modal.style.display = 'none';
-        }
+function getRandomRarity() {
+    const rand = Math.random() * 100;
+    if (rand < 5) return 'SSR';
+    if (rand < 25) return 'SR';
+    return 'R';
+}
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeModal();
-        });
+function openModal(imageSrc) {
+    event.stopPropagation();
+    modalImage.src = imageSrc;
+    modal.style.display = 'flex';
+}
+
+function closeModal() {
+    modal.style.display = 'none';
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+});
+
     </script>
 </body>
 </html>

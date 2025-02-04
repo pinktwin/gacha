@@ -123,7 +123,7 @@
         const modal = document.getElementById('imageModal');
         const modalImage = document.getElementById('modalImage');
 
-        const baseUrl = "https://github.com/TSN42/gacha/blob/master";
+        const baseUrl = "https://raw.githubusercontent.com/pinktwin/gacha/master/images";
 
         // 初期表示用の箱を作成
         for (let i = 0; i < 10; i++) {
@@ -134,7 +134,7 @@
         function getRandomImage(rarity) {
             const max = imageCount[rarity];
             const randomNum = Math.floor(Math.random() * max) + 1;
-            return `${baseUrl}/${rarity}/${rarity}${randomNum}.png?raw=true`;
+            return `${baseUrl}/${rarity}/${rarity}${randomNum}.png`;
         }
 
         async function pullGacha() {

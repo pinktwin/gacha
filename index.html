@@ -117,15 +117,15 @@
     </div>
 
     <script>
-        const imageCount = { 'R': 13, 'SR': 2, 'SSR': 3 };  // 各レアリティの画像枚数
+        const imageCount = { 'R': 14, 'SR': 2, 'SSR': 3 };  // Rの画像数を14に変更
 const container = document.getElementById('gachaContainer');
 const button = document.getElementById('pullButton');
 const modal = document.getElementById('imageModal');
 const modalImage = document.getElementById('modalImage');
 
-const baseUrl = "https://raw.githubusercontent.com/pinktwin/gacha/master/images";  // 新しいURLを使用
+const baseUrl = "https://raw.githubusercontent.com/pinktwin/gacha/master/images";  // 画像のURLを設定
 
-// 初期表示用の箱を作成
+// 初期表示用のガチャ枠を作成
 for (let i = 0; i < 10; i++) {
     container.innerHTML += `<div class="gacha-item" id="item${i}">?</div>`;
 }
@@ -134,16 +134,16 @@ for (let i = 0; i < 10; i++) {
 function getRandomImage(rarity) {
     let max;
     
-    // レアリティに応じて最大数を設定
+    // レアリティごとの画像枚数を設定（Rを14枚に変更）
     if (rarity === 'R') {
-        max = 13;
+        max = 14;
     } else if (rarity === 'SR') {
         max = 2;
     } else if (rarity === 'SSR') {
         max = 3;
     }
 
-    // ランダムに番号を選び、ゼロ埋めして2桁にする
+    // ランダムな番号を選び、ゼロ埋めして2桁にする
     const randomNum = Math.floor(Math.random() * max) + 1;
     const paddedNum = randomNum.toString().padStart(2, '0');
 
@@ -154,13 +154,15 @@ function getRandomImage(rarity) {
 async function pullGacha() {
     button.disabled = true;
 
+    // すべてのガチャ枠をリセット
     for (let i = 0; i < 10; i++) {
         document.getElementById(`item${i}`).innerHTML = '?';
         document.getElementById(`item${i}`).className = 'gacha-item';
     }
 
+    // 一定間隔でガチャ結果を表示
     for (let i = 0; i < 10; i++) {
-        await new Promise(resolve => setTimeout(resolve, 700)); // 画像表示をさらにゆっくりに
+        await new Promise(resolve => setTimeout(resolve, 700));
         showResult(i);
     }
 
@@ -200,9 +202,9 @@ function playSound(rarity) {
 
 function getRandomRarity() {
     const rand = Math.random() * 100;
-    if (rand < 5) return 'SSR';
-    if (rand < 25) return 'SR';
-    return 'R';
+    if (rand < 5) return 'SSR';  // 5%の確率でSSR
+    if (rand < 25) return 'SR';  // 20%の確率でSR
+    return 'R';  // 残り75%の確率でR
 }
 
 function openModal(imageSrc) {
@@ -218,6 +220,7 @@ function closeModal() {
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeModal();
 });
+
 
     </script>
 </body>

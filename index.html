@@ -117,7 +117,7 @@
     </div>
 
     <script>
-        const imageCount = { 'R': 14, 'SR': 2, 'SSR': 2 };  // SSRの画像数を2枚に変更
+       const imageCount = { 'R': 12, 'SR': 2, 'SSR': 2 };  // Rの画像数を12枚に変更
 const container = document.getElementById('gachaContainer');
 const button = document.getElementById('pullButton');
 const modal = document.getElementById('imageModal');
@@ -134,9 +134,9 @@ for (let i = 0; i < 10; i++) {
 function getRandomImage(rarity) {
     let max;
     
-    // レアリティごとの画像枚数を設定（SSRを2枚に変更）
+    // レアリティごとの画像枚数を設定（Rを12枚に変更）
     if (rarity === 'R') {
-        max = 14;
+        max = 12;
     } else if (rarity === 'SR') {
         max = 2;
     } else if (rarity === 'SSR') {
@@ -220,6 +220,7 @@ function closeModal() {
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeModal();
 });
+
 
 
 
